@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="502.0" prefWidth="917.0" spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="nntc.isip.myshop.ProductsController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+   <Label alignment="CENTER" prefHeight="18.0" prefWidth="872.0" text="Товары">
+      <font>
+         <Font size="20.0" />
+      </font>
+   </Label>
+   <SplitPane dividerPositions="0.3" prefHeight="324.0" prefWidth="1158.0">
+      <items>
+         <VBox alignment="CENTER" prefHeight="198.0" prefWidth="375.0" spacing="10.0">
+            <children>
+               <ImageView fx:id="imageView" fitHeight="268.0" fitWidth="378.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../../../noimage.jpg" />
+                  </image>
+               </ImageView>
+               <Button fx:id="imageUploadButton" mnemonicParsing="false" text="Выбрать изображение" />
+            </children>
+         </VBox>
+      
+          <TableView fx:id="tableView" onMouseClicked="#onRowClick">
+              <columns>
+                  <TableColumn fx:id="idColumn" text="ID" />
+                  <TableColumn fx:id="nameColumn" prefWidth="372.8000793457031" text="Название" />
+                  <TableColumn fx:id="priceColumn" minWidth="0.0" prefWidth="88.0" text="Цена" />
+              </columns>
+          </TableView>
+      </items>
+   </SplitPane>
+
+    <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="403.0" spacing="10.0">
+        <children>
+            <Button mnemonicParsing="false" onAction="#updateTable" text="Обновить" />
+            <Label text="Кликните в строку таблицы чтобы загрузить данные для редактирования в поля" />
+        </children>
+    </HBox>
+    <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="403.0" spacing="8.0">
+        <children>
+            <Label text="ID:" />
+            <TextField fx:id="fieldID" />
+            <Label text="Название:" />
+            <TextField fx:id="fieldName" />
+            <Label text="Цена:" />
+            <TextField fx:id="fieldPrice" />
+            <Button mnemonicParsing="false" onAction="#addRow" text="Добавить" />
+            <Button fx:id="btnEdit" mnemonicParsing="false" onAction="#editRow" text="Изменить" />
+            <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#deleteRow" style="-fx-background-color: red; -fx-text-fill: white;" text="Удалить" />
+        </children>
+    </HBox>
+</VBox>

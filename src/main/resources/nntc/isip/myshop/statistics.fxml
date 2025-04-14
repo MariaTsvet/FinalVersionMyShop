@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="439.0" prefWidth="873.0" spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="nntc.isip.myshop.StatisticsController">
+
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <MenuBar>
+        <menus>
+            <Menu mnemonicParsing="true" text="Файл">
+                <items>
+                    <MenuItem accelerator="Ctrl+P" mnemonicParsing="true" onAction="#showLoginWindow" text="_Подключение к СУБД" />
+                </items>
+            </Menu>
+            <Menu mnemonicParsing="true" text="Справка">
+                <items>
+                    <MenuItem accelerator="F1" mnemonicParsing="true" onAction="#showinfoWindow" text="О программе" />
+                </items>
+            </Menu>
+        </menus>
+    </MenuBar>
+    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+        <children>
+            <Label text="График продаж">
+                <font>
+                    <Font size="20.0" />
+                </font>
+            </Label>
+            <Button mnemonicParsing="false" text="За последнюю неделю" />
+            <Button layoutX="427.0" layoutY="10.0" mnemonicParsing="false" text="За последний месяц" />
+            <Button layoutX="513.0" layoutY="10.0" mnemonicParsing="false" text="За последний год" />
+            <Button layoutX="595.0" layoutY="10.0" mnemonicParsing="false" onAction="#chartTest" text="Тест" textFill="#da0909" />
+            <Button layoutX="595.0" layoutY="10.0" mnemonicParsing="false" onAction="#chartTesClear" text="Очистить" textFill="#da0909" />
+        </children>
+    </HBox>
+    <AnchorPane>
+        <children>
+            <LineChart fx:id="orderChart" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <xAxis>
+                    <CategoryAxis label="День недели" side="BOTTOM" />
+                </xAxis>
+                <yAxis>
+                    <NumberAxis label="Количество заказов" side="LEFT" />
+                </yAxis>
+            </LineChart>
+        </children>
+    </AnchorPane>
+    <HBox alignment="CENTER" layoutX="30.0" layoutY="78.0" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+        <children>
+            <Label text="Выберите период для построения графика" textFill="#909090">
+                <font>
+                    <Font name="System Italic" size="16.0" />
+                </font>
+            </Label>
+        </children>
+    </HBox>
+</VBox>
