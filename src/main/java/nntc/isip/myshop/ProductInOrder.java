@@ -4,10 +4,10 @@ public class ProductInOrder {
     private int id;
     private String name;
     private float price;
-    private float count;
+    private int count;
 
 
-    public ProductInOrder(int id, String name, float price, float count) {
+    public ProductInOrder(int id, String name, float price, int count) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -26,7 +26,7 @@ public class ProductInOrder {
         return price;
     }
 
-    public float getCount() {
+    public int getCount() {
         return count;
     }
 

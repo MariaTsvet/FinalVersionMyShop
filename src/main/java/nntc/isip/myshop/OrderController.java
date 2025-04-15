@@ -16,6 +16,7 @@ public class OrderController {
     public TableColumn idColumnAvailable;
     public TableColumn nameColumnAvailable;
     public TableColumn priceColumnAvailable;
+    public TableColumn countColumnAvailable;
     public TableView tableSelected;
     public TableColumn idColumnSelected;
     public TableColumn nameColumnSelected;
@@ -23,10 +24,12 @@ public class OrderController {
     public TableColumn countColumnSelected;
     public ComboBox<KeyValue> customersList;
     public TextField fieldQuantity;
+    public Label totalAmountLabel;
 
     private DatabaseManager primaryDatabaseManager;
     private Product selectedProduct;
     private ProductInOrder selectedProductInOrder;
+
 
     public void setPrimaryDatabaseManager(DatabaseManager dm) {
         this.primaryDatabaseManager = dm;
@@ -73,6 +76,7 @@ public class OrderController {
         idColumnAvailable.setCellValueFactory(new PropertyValueFactory<Product, Integer>("id"));
         nameColumnAvailable.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
         priceColumnAvailable.setCellValueFactory(new PropertyValueFactory<Product, Float>("price"));
+       // countColumnAvailable.setCellValueFactory(new PropertyValueFactory<Product, Integer>("count"));
         tableAvailable.setItems(data);
     }
 
@@ -83,6 +87,7 @@ public class OrderController {
         priceColumnSelected.setCellValueFactory(new PropertyValueFactory<Product, Float>("price"));
         countColumnSelected.setCellValueFactory(new PropertyValueFactory<Product, Integer>("count"));
         tableSelected.setItems(data);
+        updateTotalAmount();
     }
 
     public void feelCustomersList(int id) {
@@ -99,14 +104,29 @@ public class OrderController {
     }
 
     public void addProductToOrder() {
-        if (primaryDatabaseManager.addProductToOrder(
-                orderEditId,
-                selectedProduct.getId(),
-                Float.parseFloat(fieldQuantity.getText().replace(",", ".")))) {
-            updateTableProductsInOrder(this.orderEditId);
-        }
-        ;
+        try {
+            // Получаем количество как целое число
+            int quantity = Integer.parseInt(fieldQuantity.getText().replace(",", "."));
+
+            // Проверяем, что количество больше 0
+            if (quantity <= 0) {
+                throw new NumberFormatException("Количество должно быть положительным числом.");
+            }
+
+            // Добавляем продукт в заказ
+            if (primaryDatabaseManager.addProductToOrder(
+                    orderEditId,
+                    selectedProduct.getId(),
+                    quantity)) {
+                updateTableProductsInOrder(this.orderEditId);
+                updateTotalAmount();
+            }
+        } catch (NumberFormatException e) {
+                 System.out.println("Ошибка ввода: " + e.getMessage());
+                }
     }
+
+
 
     public void removeProductFromOrder() {
         if (primaryDatabaseManager.removeProductFromOrder(
@@ -145,8 +165,7 @@ public class OrderController {
     }
 
     public void onQuantityChanged() {
-
-        if (selectedProductInOrder != null) {
+         if (selectedProductInOrder != null) {
             float oldValue = selectedProductInOrder.getCount();
             float newValue = Float.parseFloat(!fieldQuantity.getText().isEmpty() ? fieldQuantity.getText()
                     .replace(",", ".")
@@ -156,8 +175,7 @@ public class OrderController {
             System.out.println(newValue);
 
             if (oldValue != newValue) {
-                System.out.println("NOT Match!");
-                if (primaryDatabaseManager.updateCountinOrder(
+                        if (primaryDatabaseManager.updateCountinOrder(
                         orderEditId,
                         selectedProductInOrder.getId(),
                         Float.parseFloat(fieldQuantity.getText().replace(",", "."))
@@ -172,6 +190,18 @@ public class OrderController {
                 System.out.println("Match!");
             }
         }
-
     }
+
+    private void updateTotalAmount() {
+        float totalAmount = 0.0f;
+        ObservableList<ProductInOrder> productsInOrder = tableSelected.getItems();
+
+        for (ProductInOrder product : productsInOrder) {
+            totalAmount += product.getPrice() * product.getCount();
+        }
+
+        totalAmountLabel.setText(String.format("Итого: %.2f", totalAmount));
+    }
+
+
 }

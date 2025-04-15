@@ -14,8 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="649.0" prefWidth="1239.0" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="nntc.isip.myshop.OrderController">
+<VBox prefHeight="649.0" prefWidth="1239.0" spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nntc.isip.myshop.OrderController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
@@ -67,11 +66,12 @@
                            <Font size="22.0" />
                         </font>
                      </Label>
-                      <TableView fx:id="tableAvailable" onMouseClicked="#onProductClicked" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                      <TableView fx:id="tableAvailable" onMouseClicked="#onProductClicked" prefHeight="316.0" prefWidth="642.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                           <columns>
                               <TableColumn fx:id="idColumnAvailable" text="ID" />
-                              <TableColumn fx:id="nameColumnAvailable" prefWidth="209.0" text="Название" />
-                              <TableColumn fx:id="priceColumnAvailable" minWidth="0.0" prefWidth="153.0" text="Цена" />
+                              <TableColumn fx:id="nameColumnAvailable" prefWidth="250.40000915527344" text="Название" />
+                              <TableColumn fx:id="priceColumnAvailable" minWidth="0.0" prefWidth="77.5999755859375" text="Цена" />
+                           <TableColumn fx:id="countColumnAvailable" minWidth="0.0" prefWidth="84.0" text="Количество" />
                           </columns>
                       </TableView>
                   </children></VBox>
@@ -128,11 +128,20 @@
                       <TableView fx:id="tableSelected" onMouseClicked="#onProductInOrderClicked" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                           <columns>
                               <TableColumn fx:id="idColumnSelected" text="ID" />
-                              <TableColumn fx:id="nameColumnSelected" prefWidth="193.0" text="Название" />
-                              <TableColumn fx:id="priceColumnSelected" prefWidth="92.0" text="Цена" />
-                              <TableColumn fx:id="countColumnSelected" prefWidth="106.0" text="Кол-во" />
+                              <TableColumn fx:id="nameColumnSelected" prefWidth="250.4001007080078" text="Название" />
+                              <TableColumn fx:id="priceColumnSelected" prefWidth="75.99993896484375" text="Цена" />
+                              <TableColumn fx:id="countColumnSelected" prefWidth="87.2000732421875" text="Количество" />
                           </columns>
                       </TableView>
+                     <HBox prefHeight="100.0" prefWidth="200.0">
+                        <children>
+                           <Label fx:id="totalAmountLabel" alignment="CENTER_RIGHT" prefHeight="32.0" prefWidth="490.0" text="totalAmountLabel">
+                              <font>
+                                 <Font size="22.0" />
+                              </font>
+                           </Label>
+                        </children>
+                     </HBox>
                   </children></VBox>
             </children>
          </AnchorPane>

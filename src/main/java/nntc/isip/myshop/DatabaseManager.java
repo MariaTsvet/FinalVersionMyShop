@@ -80,6 +80,7 @@ public class DatabaseManager {
                         id serial4 NOT NULL PRIMARY KEY,
                         "name" varchar(256) NOT NULL,
                         price numeric(10, 2) NOT NULL,
+                        count int4 NULL,
                         image_data bytea NULL
                     );
                     CREATE TABLE IF NOT EXISTS %s.order_product (
@@ -91,23 +92,6 @@ public class DatabaseManager {
                              	CONSTRAINT fk_order FOREIGN KEY (order_id) REFERENCES %s.orders(id) ON DELETE CASCADE ON UPDATE CASCADE
                              );
                 """, SCHEMA, SCHEMA, SCHEMA, SCHEMA, SCHEMA, SCHEMA, SCHEMA);
-
-        String dmlQueries = String.format("""
-                    INSERT INTO %s.products ("name",price) VALUES
-                    ('Сгущенное молоко',60),
-                    ('Сыр',200),
-                    ('Молоко',50),
-                    ('Сахар',150),
-                    ('Сливочное масло',150),
-                    ('Батон',35);
-                    INSERT INTO %s.customers ("name",email) VALUES
-                    ('Вася','vasya@mail.ru'),
-                    ('Маша','masha@mail.ru');
-                    INSERT INTO %s.orders (customer_id) VALUES
-                    (1),(2);
-                    INSERT INTO %s.order_product (order_id, product_id, quantity) VALUES
-                    (1, 1, 1),(1, 2, 2),(1, 3, 3),(2, 4, 3),(2, 5, 1),(2, 6, 2);
-                """, SCHEMA, SCHEMA, SCHEMA, SCHEMA);
 
 
         try (Statement statement = connection.createStatement()) {
@@ -206,7 +190,7 @@ public class DatabaseManager {
                         resultSet.getInt("id"),
                         resultSet.getString("name"),
                         resultSet.getFloat("price"),
-                        resultSet.getFloat("count")
+                        resultSet.getInt("count")
                 ));
             }
 
@@ -219,6 +203,12 @@ public class DatabaseManager {
     }
 
     public void customersInsertData(String name, String email) {
+        if (email == null || !email.contains("@")) {
+            System.out.println("Ошибка: электронная почта должна содержать знак '@'.");
+            Platform.runLater(() -> ErrorDialog.showError("Ошибка ввода", "Электронная почта должна содержать знак '@'."));
+            return;
+        }
+
         String query = String.format("INSERT INTO %s (name, email) VALUES ('%s', '%s')", SCHEMA.concat(".customers"), name, email);
         try (var preparedStatement = connection.prepareStatement(query)) {
             int rowsInserted = preparedStatement.executeUpdate();
@@ -231,10 +221,13 @@ public class DatabaseManager {
     }
 
     public void customersUpdateData(Integer id, String name, String email) {
-        String query = String.format("UPDATE %s SET name='%s', email='%s' WHERE id=%d", SCHEMA.concat(".customers"), name, email, id);
+        if (email == null || !email.contains("@")) {
+            System.out.println("Ошибка: электронная почта должна содержать знак '@'.");
+            Platform.runLater(() -> ErrorDialog.showError("Ошибка ввода", "Электронная почта должна содержать знак '@'."));
+            return;
+        }
 
-        System.out.println("QUERY:");
-        System.out.println(query);
+        String query = String.format("UPDATE %s SET name='%s', email='%s' WHERE id=%d", SCHEMA.concat(".customers"), name, email, id);
 
         try (var preparedStatement = connection.prepareStatement(query)) {
             int rowsUpdated = preparedStatement.executeUpdate();
@@ -245,6 +238,7 @@ public class DatabaseManager {
             Platform.runLater(() -> ErrorDialog.showError("Ошибка при изменении данных: ", e.getMessage()));
         }
     }
+
 
     public void customersDeleteData(int id) {
         String query = String.format("DELETE FROM %s WHERE id=%d", SCHEMA.concat(".customers"), id);
